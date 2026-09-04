@@ -49,8 +49,27 @@ function SignupPage() {
     }
 
     if (valid) {
-      console.log("Name:", name);
-      console.log("Password:", password);
+      const user = {
+        username: name,
+        email: email,
+        password: password,
+        role: role
+  };
+
+  fetch("http://localhost:8080/api/auth/signup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(user)
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Registered successfully:", data);
+    })
+    .catch((error) => {
+      console.log("Error:", error);
+    });
     }
   };
 
@@ -105,8 +124,8 @@ function SignupPage() {
 
 
           <option value="" disabled hidden></option>
-          <option value="admin">Admin</option>
-          <option value="customer">Customer</option>
+          <option value="ADMIN">Admin</option>
+          <option value="CUSTOMER">Customer</option>
         </select>
 
         <button type="submit">Sign up</button>
