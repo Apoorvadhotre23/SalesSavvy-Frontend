@@ -1,141 +1,212 @@
-import { Link } from "react-router-dom";
-import "./signup.css";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import "./signup.css";
+import { validateSignup } from "../ValidateForm/signupValidation";
 
 function SignupPage() {
-  const [name, setName] = useState("");
-  const [nameError, setNameEr] = useState("");
 
-  const [password, setPassword] = useState("");
-  const [passErr, setPassErr] = useState("");
+const [name, setName] = useState("");
+const [nameError, setNameError] = useState("");
 
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
+const [email, setEmail] = useState("");
+const [emailError, setEmailError] = useState("");
 
-  const [role, setRole] = useState("");
+const [password, setPassword] = useState("");
+const [passwordError, setPasswordError] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const [role, setRole] = useState("");
+const [roleError, setRoleError] = useState("");
 
-    let valid = true;
+const [loading, setLoading] = useState(false);
 
-    //Name Validation
-    if (name.length < 5 || name.length > 50) {
-      setNameEr("Name must be between 5 and 50 characters");
-      valid = false;
-    } else {
-      setNameEr("");
+const navigate = useNavigate();
+
+const handleSubmit = (e) => {
+
+
+e.preventDefault();
+
+// 1. Validate form
+const errors = validateSignup(name, email, password, role);
+
+// 2. Display validation errors
+setNameError(errors.name || "");
+setEmailError(errors.email || "");
+setPasswordError(errors.password || "");
+setRoleError(errors.role || "");
+
+// 3. Stop if validation fails
+if (Object.keys(errors).length > 0) {
+  return;
+}
+
+// 4. Create user object
+const user = {
+  username: name,
+  email: email,
+  password: password,
+  role: role
+};
+
+// 5. Show loading
+setLoading(true);
+
+// 6. Send data to Spring Boot backend
+fetch("http://localhost:8080/api/auth/signup", {
+
+  method: "POST",
+
+  headers: {
+    "Content-Type": "application/json"
+  },
+
+  body: JSON.stringify(user)
+
+})
+ .then(async (response) => {
+
+  if (!response.ok) {
+    const message = await response.text();
+    throw new Error(message);
+  }
+
+  return response.json();
+})
+
+ .then(() => {
+  console.log("Registered successfully");
+  navigate("/success");
+})
+
+.catch((error) => {
+
+    if (error.message === "Email already exists") {
+      setEmailError("Email already exists");
     }
 
-    // Password validation
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&*!])[A-Za-z\d@#$%^&*!]{8,}$/;
-
-    if (!passwordRegex.test(password)) {
-      setPassErr(
-        "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
-      );
-      valid = false;
-    } else {
-      setPassErr("");
+    if (error.message === "Username already exists") {
+      setNameError("Username already exists");
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-      setEmailError("Please enter a valid email");
-      valid = false;
-    } else {
-      setEmailError("");
-    }
-
-    if (valid) {
-      const user = {
-        username: name,
-        email: email,
-        password: password,
-        role: role
-  };
-
-  fetch("http://localhost:8080/api/auth/signup", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(user)
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Registered successfully:", data);
-    })
-    .catch((error) => {
-      console.log("Error:", error);
-    });
-    }
-  };
-
-  return (
-    <div className="box">
-      <form action="" onSubmit={handleSubmit}>
-        <h1>Sign Up</h1>
-
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          id="name"
-          name="username"
-          placeholder="Enter your name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-
-        {nameError && <p className="error">{nameError}</p>}
-
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={email}
-          placeholder="Enter your email"
-          onChange={(e)=>setEmail(e.target.value)}
-        />
-
-        {emailError && <p className="error">{emailError}</p>}
-
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Enter your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        {passErr && <p className="error">{passErr}</p>}
-
-        <label htmlFor="role">Role</label>
-        <select name="role" 
-                id="role" 
-                value={role} 
-                onChange={(e) => setRole(e.target.value)}
-                required
-                >
+    setLoading(false);
+  });
 
 
-          <option value="" disabled hidden></option>
-          <option value="ADMIN">Admin</option>
-          <option value="CUSTOMER">Customer</option>
-        </select>
+};
 
-        <button type="submit">Sign up</button>
+return (
 
-        <p className="login-link">
-          <Link to="/login">Already a user? Login here</Link>
-        </p>
-      </form>
-    </div>
-  );
+
+<div className="box">
+
+  <form onSubmit={handleSubmit}>
+
+    <h1>Sign Up</h1>
+
+
+    {/* Name */}
+
+    <label htmlFor="name">Name</label>
+
+    <input
+      type="text"
+      id="name"
+      name="username"
+      placeholder="Enter your name"
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+    />
+
+    {nameError && (
+      <p className="error">{nameError}</p>
+    )}
+
+
+    {/* Email */}
+
+    <label htmlFor="email">Email</label>
+
+    <input
+      type="email"
+      id="email"
+      name="email"
+      placeholder="Enter your email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+    />
+
+    {emailError && (
+      <p className="error">
+        {emailError}
+      </p>
+    )}
+
+
+    {/* Password */}
+
+    <label htmlFor="password">Password</label>
+
+    <input
+      type="password"
+      id="password"
+      name="password"
+      placeholder="Enter your password"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+    />
+
+    {passwordError && (
+      <p className="error">
+        {passwordError}
+      </p>
+    )}
+
+
+    {/* Role */}
+
+    <label htmlFor="role">Role</label>
+
+    <select
+      id="role"
+      name="role"
+      value={role}
+      onChange={(e) => setRole(e.target.value)}
+    >
+
+      <option value="" disabled hidden>Select Role</option>
+      <option value="ADMIN">Admin</option>
+      <option value="CUSTOMER">Customer</option>
+
+    </select>
+
+    {roleError && (
+      <p className="error">
+        {roleError}
+      </p>
+    )}
+
+
+    {/* Submit Button */}
+
+    <button type="submit" disabled={loading}>
+      {loading ? "Creating Account..." : "Sign Up"}
+    </button>
+
+
+    {/* Login Link */}
+
+    <p className="login-link">
+
+      <Link to="/login">Already a user? Login here</Link>
+
+    </p>
+
+  </form>
+
+</div>
+
+
+);
 }
 
 export default SignupPage;
