@@ -3,62 +3,53 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 function LoginPage() {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
-
     e.preventDefault();
 
     const loginData = {
       email: email,
-      password: password
+      password: password,
     };
 
     fetch("http://localhost:8080/api/auth/login", {
-
       method: "POST",
-
+      credentials: "include",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
 
-      body: JSON.stringify(loginData)
-
+      body: JSON.stringify(loginData),
     })
-      .then((response) => {
-
+      .then(async (response) => {
         if (!response.ok) {
-          throw new Error("Invalid email or password");
+          const data = await response.json();
+
+          throw new Error(data.error || "Login failed");
         }
 
         return response.json();
-
       })
       .then((data) => {
-
+        console.log("Login successful");
         console.log(data);
 
         navigate("/home");
-
       })
       .catch((error) => {
-
         console.log(error.message);
 
         navigate("/login-failed");
-
       });
   };
 
   return (
     <div className="box">
-
       <form onSubmit={handleSubmit}>
-
         <h1>Login Page</h1>
 
         <label htmlFor="email">Email</label>
@@ -83,21 +74,14 @@ function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button type="submit">
-          Sign In
-        </button>
+        <button type="submit">Sign In</button>
 
         <p className="login-link">
-          <Link to="/">
-            Don't have an account? Sign up
-          </Link>
+          <Link to="/">Don't have an account? Sign up</Link>
         </p>
-
       </form>
-
     </div>
   );
 }
 
 export default LoginPage;
-
