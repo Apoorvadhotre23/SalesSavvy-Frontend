@@ -97,6 +97,8 @@ fetch("http://localhost:8080/api/auth/signup", {
 return (
 
 
+
+<div className="signup-page">
 <div className="box">
 
   <form onSubmit={handleSubmit}>
@@ -203,8 +205,9 @@ return (
 
   </form>
 
-</div>
+ </div>
 
+</div>
 
 );
 }

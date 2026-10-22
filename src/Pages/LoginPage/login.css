@@ -1,13 +1,31 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f2f4f7;
+/* Full-screen login background */
+.login-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  background-image: url("/backGround.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+  overflow-y: auto;
 }
 
 /* Main box */
-.box {
+/* Login box only */
+.login-page .box {
   width: 400px;
-  margin: 80px auto;
+  max-width: 100%;
+  margin: auto;
   padding: 30px;
   background-color: white;
   border-radius: 10px;

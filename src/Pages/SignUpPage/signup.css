@@ -12,10 +12,33 @@ body,
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f2f4f7;
-  overflow: hidden;
+  background-color: white;
 }
+
+
+.signup-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  background-image: url("/backGround.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 1;
+}
+
+
 
 /* Center the box */
 #root {
@@ -24,13 +47,16 @@ body {
   align-items: center;
 }
 
+
 /* Signup / Login box */
 .box {
+   margin: 0;
   width: 350px;
   padding: 20px 25px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  
 }
 
 /* Heading */
