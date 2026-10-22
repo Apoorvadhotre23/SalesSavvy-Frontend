@@ -41,11 +41,6 @@ body {
 
 
 /* Center the box */
-#root {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
 
 /* Signup / Login box */
