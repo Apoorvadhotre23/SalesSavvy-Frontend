@@ -48,6 +48,7 @@ function LoginPage() {
   };
 
   return (
+    <div className="login-page">
     <div className="box">
       <form onSubmit={handleSubmit}>
         <h1>Login Page</h1>
@@ -80,6 +81,7 @@ function LoginPage() {
           <Link to="/">Don't have an account? Sign up</Link>
         </p>
       </form>
+    </div>
     </div>
   );
 }
