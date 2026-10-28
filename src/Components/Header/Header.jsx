@@ -1,11 +1,11 @@
-
+import { useNavigate } from "react-router-dom";
 import { ShoppingCart, CircleUserRound } from "lucide-react";
 import "./Header.css";
 
 function Header() {
+  const navigate = useNavigate();
   return (
     <header className="site-header">
-
       {/* SalesSavvy Logo */}
       <div className="header-brand">
         <img
@@ -17,7 +17,6 @@ function Header() {
 
       {/* Cart and Profile */}
       <div className="header-actions">
-
         <button
           type="button"
           className="header-icon-btn"
@@ -30,12 +29,11 @@ function Header() {
           type="button"
           className="header-icon-btn"
           aria-label="User Profile"
+          onClick={() => navigate("/profile")}
         >
           <CircleUserRound size={26} />
         </button>
-
       </div>
-
     </header>
   );
 }
