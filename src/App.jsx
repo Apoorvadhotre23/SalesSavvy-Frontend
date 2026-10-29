@@ -5,6 +5,7 @@ import Success from './Pages/Sucess/Success.jsx'
 import LoginFailed from './Pages/LoginFailed/LoginFailed.jsx'
 import Home from './Pages/HomePage/Home.jsx'
 import Profile from './Pages/ProfilePage/Profile.jsx'
+import ProductDetails from "./Pages/ProductDetails/ProductDetails";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route path='/login-failed' element={<LoginFailed/>}/>
       <Route path='/home' element = {<Home/>}/>
       <Route path='/profile' element={<Profile/>}/>
+      <Route path="/products/:productId" element={<ProductDetails />} />
      </Routes>
   </BrowserRouter>
     </div>

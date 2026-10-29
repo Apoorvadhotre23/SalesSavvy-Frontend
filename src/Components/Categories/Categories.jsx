@@ -17,6 +17,11 @@ function Categories({ onCategorySelect }) {
       name: "Electronics",
       image: "/categories/Electronics.png",
     },
+    {
+      id: 4,
+      name: "Pants",
+      image: "/categories/Pants.jpg"
+    }
   ];
 
   return (

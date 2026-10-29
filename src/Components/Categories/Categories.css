@@ -9,7 +9,7 @@
 /* Section heading */
 
 .categories-section h2 {
-  max-width: 1100px;
+  max-width: 1300px;
   margin: 0 auto 25px;
   font-size: 24px;
   font-weight: 700;
@@ -20,7 +20,7 @@
 /* Categories layout */
 .categories-container {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 25px;
   max-width: 1100px;
   margin: 0 auto;

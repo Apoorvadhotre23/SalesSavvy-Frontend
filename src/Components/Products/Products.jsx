@@ -1,11 +1,12 @@
-
 import { useEffect, useState } from "react";
 import "./Products.css";
+import { useNavigate } from "react-router-dom";
 
 function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -18,14 +19,14 @@ function Products() {
             method: "GET",
             credentials: "include",
             signal: controller.signal,
-          }
+          },
         );
 
         if (!response.ok) {
           throw new Error(
             response.status === 401
               ? "Please log in to view products."
-              : "Unable to load products."
+              : "Unable to load products.",
           );
         }
 
@@ -62,9 +63,7 @@ function Products() {
           <h2>Shirts Collection</h2>
           <p>Explore our collection of stylish shirts</p>
         </div>
-        <span className="products-count">
-          {products.length} Products
-        </span>
+        <span className="products-count">{products.length} Products</span>
       </div>
 
       {products.length === 0 ? (
@@ -72,10 +71,7 @@ function Products() {
       ) : (
         <div className="products-grid">
           {products.map((product) => (
-            <article
-              className="product-card"
-              key={product.productId}
-            >
+            <article className="product-card" key={product.productId}>
               <div className="product-image-wrapper">
                 {product.image?.length > 0 && (
                   <img
@@ -90,9 +86,7 @@ function Products() {
               <div className="product-info">
                 <h3>{product.name}</h3>
 
-                <p className="product-description">
-                  {product.description}
-                </p>
+                <p className="product-description">{product.description}</p>
 
                 <div className="product-bottom">
                   <p className="product-price">
@@ -106,22 +100,16 @@ function Products() {
                         : "stock-unavailable"
                     }
                   >
-                    {product.stock > 0
-                      ? "In Stock"
-                      : "Out of Stock"}
+                    {product.stock > 0 ? "In Stock" : "Out of Stock"}
                   </span>
                 </div>
 
                 <button
                   type="button"
                   className="product-view-btn"
-                  onClick={() => {
-                    // Product Details Page will be connected next.
-                  }}
-                  disabled
-                  title="Product details coming soon"
+                  onClick={() => navigate(`/products/${product.productId}`)}
                 >
-                  View Details — Coming Soon
+                  View Details
                 </button>
               </div>
             </article>
