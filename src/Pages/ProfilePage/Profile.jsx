@@ -5,21 +5,20 @@ import { ArrowLeft, UserRound, Hash, Mail, ShieldCheck } from "lucide-react";
 
 
 function Profile() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState("");
 
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const response = await fetch(
-          "http://localhost:8080/api/users/me",
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
+        const response = await fetch("http://localhost:8080/api/users/me", {
+          method: "GET",
+          credentials: "include",
+        });
 
         if (!response.ok) {
           throw new Error("Unable to fetch profile");
@@ -45,78 +44,106 @@ function Profile() {
     return <p>{error}</p>;
   }
 
+  // Logout implementation
+
+  const handleLogout = async () => {
+    setLoggingOut(true);
+    setLogoutError("");
+
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Logout failed. Please try again.");
+      }
+
+      navigate("/home", { replace: true });
+    } catch (error) {
+      setLogoutError(error.message);
+    } finally {
+      setLoggingOut(false);
+    }
+  };
+
   return (
-  
-  <div className="profile-page">
+    <div className="profile-page">
+      <div className="profile-container">
+        <div className="profile-header">
+          <button
+            className="profile-back-icon"
+            onClick={() => navigate("/home")}
+            aria-label="Back to Home"
+          >
+            <ArrowLeft size={24} />
+          </button>
 
-    <div className="profile-container">
+          <h2>My Profile</h2>
+        </div>
 
-      <div className="profile-header">
+        <div className="profile-avatar">
+          <UserRound size={45} />
+        </div>
+
+        <h2 className="profile-username">{user.username}</h2>
+        <p className="profile-role">{user.role}</p>
+
+        <div className="profile-details">
+          <div className="profile-detail-row">
+            <Hash size={22} />
+            <div>
+              <span>User ID</span>
+              <p>{user.userId}</p>
+            </div>
+          </div>
+
+          <div className="profile-detail-row">
+            <UserRound size={22} />
+            <div>
+              <span>Username</span>
+              <p>{user.username}</p>
+            </div>
+          </div>
+
+          <div className="profile-detail-row">
+            <Mail size={22} />
+            <div>
+              <span>Email</span>
+              <p>{user.email}</p>
+            </div>
+          </div>
+
+          <div className="profile-detail-row">
+            <ShieldCheck size={22} />
+            <div>
+              <span>Role</span>
+              <p>{user.role}</p>
+            </div>
+          </div>
+        </div>
+
         <button
-          className="profile-back-icon"
+          type="button"
+          className="back-home-btn"
           onClick={() => navigate("/home")}
-          aria-label="Back to Home"
         >
-          <ArrowLeft size={24} />
+          Back to Home
         </button>
 
-        <h2>My Profile</h2>
+        {logoutError && <p className="logout-error">{logoutError}</p>}
+
+        <button
+          type="button"
+          className="profile-logout-btn"
+          onClick={handleLogout}
+          disabled={loggingOut}
+        >
+          {loggingOut ? "Logging out..." : "Logout"}
+        </button>
       </div>
-
-      <div className="profile-avatar">
-        <UserRound size={45} />
-      </div>
-
-      <h2 className="profile-username">{user.username}</h2>
-      <p className="profile-role">{user.role}</p>
-
-      <div className="profile-details">
-
-        <div className="profile-detail-row">
-          <Hash size={22} />
-          <div>
-            <span>User ID</span>
-            <p>{user.userId}</p>
-          </div>
-        </div>
-
-        <div className="profile-detail-row">
-          <UserRound size={22} />
-          <div>
-            <span>Username</span>
-            <p>{user.username}</p>
-          </div>
-        </div>
-
-        <div className="profile-detail-row">
-          <Mail size={22} />
-          <div>
-            <span>Email</span>
-            <p>{user.email}</p>
-          </div>
-        </div>
-
-        <div className="profile-detail-row">
-          <ShieldCheck size={22} />
-          <div>
-            <span>Role</span>
-            <p>{user.role}</p>
-          </div>
-        </div>
-
-      </div>
-
-      <button
-        type="button"
-        className="back-home-btn"
-        onClick={() => navigate("/home")}
-      >
-        Back to Home
-      </button>
-
     </div>
-
-  </div>
   );
 }
 
