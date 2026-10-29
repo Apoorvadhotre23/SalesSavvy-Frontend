@@ -7,6 +7,7 @@ function Products() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [unauthorized, setUnauthorized] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -22,12 +23,13 @@ function Products() {
           },
         );
 
+        if (response.status === 401) {
+          setUnauthorized(true);
+          return;
+        }
+
         if (!response.ok) {
-          throw new Error(
-            response.status === 401
-              ? "Please log in to view products."
-              : "Unable to load products.",
-          );
+          throw new Error("Unable to load products.");
         }
 
         const data = await response.json();
@@ -46,11 +48,32 @@ function Products() {
     fetchProducts();
 
     return () => controller.abort();
-  }, []);
+  }, [navigate]);
 
   if (loading) {
     return <p className="products-message">Loading shirts...</p>;
   }
+
+  if (unauthorized) {
+  return (
+    <div className="session-expired">
+      <h2>Session Expired</h2>
+
+      <p>
+        Your session has expired.
+        Please log in again to continue shopping.
+      </p>
+
+      <button
+        type="button"
+        className="session-login-btn"
+        onClick={() => navigate("/login")}
+      >
+        Login Again
+      </button>
+    </div>
+  );
+}
 
   if (error) {
     return <p className="products-message">{error}</p>;
