@@ -1,28 +1,30 @@
 import "./Categories.css";
+import { useNavigate } from "react-router-dom";
 
 function Categories({ onCategorySelect }) {
+  const navigate = useNavigate();
   const categories = [
-    {
-      id: 1,
-      name: "Shirts",
-      image: "/categories/Shirts.png",
-    },
-    {
-      id: 2,
-      name: "Shoes",
-      image: "/categories/Sneaker.png",
-    },
-    {
-      id: 3,
-      name: "Electronics",
-      image: "/categories/Electronics.png",
-    },
-    {
-      id: 4,
-      name: "Pants",
-      image: "/categories/Pants.jpg"
-    }
-  ];
+  {
+    id: 1,
+    name: "Shirts",
+    image: "/categories/Shirts.png",
+  },
+  {
+    id: 2,
+    name: "Accesories",
+    image: "/categories/Sneaker.png",
+  },
+  {
+    id: 3,
+    name: "Mobiles",
+    image: "/categories/Electronics.png",
+  },
+  {
+    id: 4,
+    name: "Pants",
+    image: "/categories/Pants.jpg",
+  },
+];
 
   return (
     <section className="categories-section">
@@ -37,6 +39,8 @@ function Categories({ onCategorySelect }) {
             onClick={() => {
               if (category.name === "Shirts") {
                 onCategorySelect(category.name);
+              } else {
+                navigate(`/category/${category.name}`);
               }
             }}
           >

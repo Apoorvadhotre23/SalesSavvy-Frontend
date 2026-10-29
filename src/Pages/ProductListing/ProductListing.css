@@ -1,0 +1,52 @@
+
+.listing-page {
+  min-height: 100vh;
+  background: #f5f9ff;
+  padding: 30px 40px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.listing-container {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.listing-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: #082454;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 30px;
+  padding: 8px 0;
+}
+
+.listing-back-btn:hover {
+  color: #087bfa;
+}
+
+.listing-error {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.listing-error button {
+  margin-top: 15px;
+  padding: 10px 25px;
+  background: #087bfa;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .listing-page {
+    padding: 20px 16px;
+  }
+}
