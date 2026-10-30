@@ -1,79 +1,70 @@
-
-/* Search bar section */
-.search-section {
+.search-wrapper {
+  position: relative;
   width: 100%;
-  padding: 18px 5%;
-  background-color: #ffffff;
+  max-width: 650px;
+  margin: 15px auto 0 auto ;
+  z-index: 10;
 }
 
-/* Search bar container */
-.search-container {
+.search-box input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid #d4e3f7;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+}
+
+.search-box input:focus {
+  border-color: #087bfa;
+}
+
+.search-results {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  max-height: 350px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #e0e7f0;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  padding: 10px;
+}
+
+.search-results > p {
+  margin: 10px;
+  color: #555;
+}
+
+.search-result-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-
-  width: 100%;
-  max-width: 750px;
-  margin: 0 auto;
-  padding: 6px 8px 6px 16px;
-
-  background-color: #ffffff;
-  border: 1px solid #dbe3ee;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-/* Search icon */
-.search-icon {
-  color: #64748b;
-  flex-shrink: 0;
-}
-
-/* Input field */
-.search-container input {
-  flex: 1;
-  min-width: 0;
-  padding: 10px 0;
-
-  border: none;
-  outline: none;
-  background: transparent;
-
-  font-size: 15px;
-  color: #0a2454;
-}
-
-/* Search button */
-.search-container button {
-  padding: 10px 22px;
-
-  border: none;
+  gap: 15px;
+  padding: 10px;
   border-radius: 7px;
-
-  background-color: #087bfa;
-  color: white;
-
-  font-size: 14px;
-  font-weight: 600;
   cursor: pointer;
 }
 
-.search-container button:hover {
-  background-color: #0056b3;
+.search-result-item:hover {
+  background-color: #f0f7ff;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 600px) {
-  .search-section {
-    padding: 12px;
-  }
+.search-result-item img {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+}
 
-  .search-container {
-    gap: 8px;
-    padding-left: 12px;
-  }
+.search-result-item h4 {
+  margin: 0 0 5px;
+  font-size: 14px;
+  color: #082454;
+}
 
-  .search-container button {
-    padding: 10px 12px;
-  }
+.search-result-item p {
+  margin: 0;
+  font-weight: 600;
+  color: #087bfa;
 }
