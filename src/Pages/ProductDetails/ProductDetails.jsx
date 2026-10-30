@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, ShoppingCart } from "lucide-react";
@@ -12,6 +11,8 @@ function ProductDetails() {
   const [selectedImage, setSelectedImage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [addingToCart, setAddingToCart] = useState(false);
+  const [cartMessage, setCartMessage] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -29,7 +30,7 @@ function ProductDetails() {
             method: "GET",
             credentials: "include",
             signal: controller.signal,
-          }
+          },
         );
 
         if (!response.ok) {
@@ -65,6 +66,44 @@ function ProductDetails() {
     return () => controller.abort();
   }, [productId]);
 
+  const handleAddToCart = async () => {
+    if (!product || addingToCart || product.stock <= 0) return;
+
+    setAddingToCart(true);
+    setCartMessage("");
+
+    try {
+      const response = await fetch("http://localhost:8080/api/cart/add", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productId: product.productId,
+          quantity: 1,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.status === 401) {
+        setCartMessage("Session expired. Please login again.");
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to add product to cart.");
+      }
+
+      setCartMessage("Product added to cart successfully!");
+    } catch (err) {
+      setCartMessage(err.message || "Something went wrong.");
+    } finally {
+      setAddingToCart(false);
+    }
+  };
+
   if (loading) {
     return <p className="details-message">Loading product details...</p>;
   }
@@ -73,9 +112,7 @@ function ProductDetails() {
     return (
       <div className="details-message">
         <p>{error}</p>
-        <button onClick={() => navigate("/home")}>
-          Back to Home
-        </button>
+        <button onClick={() => navigate("/home")}>Back to Home</button>
       </div>
     );
   }
@@ -87,24 +124,16 @@ function ProductDetails() {
   return (
     <div className="product-details-page">
       <div className="product-details-container">
-
-        <button
-          className="details-back-btn"
-          onClick={() => navigate("/home")}
-        >
+        <button className="details-back-btn" onClick={() => navigate("/home")}>
           <ArrowLeft size={19} />
           Back to Home
         </button>
 
         <div className="details-layout">
-
           <div className="details-gallery">
             <div className="details-main-image">
               {images.length > 0 ? (
-                <img
-                  src={images[selectedImage]}
-                  alt={product.name}
-                />
+                <img src={images[selectedImage]} alt={product.name} />
               ) : (
                 <p>No image available</p>
               )}
@@ -141,9 +170,7 @@ function ProductDetails() {
 
             <span
               className={
-                product.stock > 0
-                  ? "details-in-stock"
-                  : "details-out-stock"
+                product.stock > 0 ? "details-in-stock" : "details-out-stock"
               }
             >
               {product.stock > 0
@@ -152,20 +179,22 @@ function ProductDetails() {
             </span>
 
             <h3>Product Description</h3>
-            <p className="details-description">
-              {product.description}
-            </p>
+            <p className="details-description">{product.description}</p>
 
             <button
               className="details-cart-btn"
-              disabled
-              title="Shopping cart will be implemented next"
-            >
+              onClick={handleAddToCart}
+              disabled={addingToCart || product.stock <= 0}>
               <ShoppingCart size={20} />
-              Add to Cart — Coming Soon
+              {addingToCart ? "Adding..." : "Add to Cart"}
             </button>
-          </div>
 
+            {cartMessage && (
+              <p className="details-cart-message" role="status">
+                {cartMessage}
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </div>
