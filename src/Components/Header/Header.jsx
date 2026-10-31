@@ -1,9 +1,40 @@
+
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCart, CircleUserRound } from "lucide-react";
 import "./Header.css";
 
 function Header() {
   const navigate = useNavigate();
+
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const fetchCartCount = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/cart/count",
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch cart count");
+        }
+
+        const data = await response.json();
+        setCartCount(data.count);
+
+      } catch (error) {
+        console.error("Cart count error:", error);
+      }
+    };
+
+    fetchCartCount();
+  }, []);
+
   return (
     <header className="site-header">
       {/* SalesSavvy Logo */}
@@ -20,9 +51,15 @@ function Header() {
         <button
           type="button"
           className="header-icon-btn"
-          aria-label="Shopping Cart"
+          aria-label={`Shopping Cart, ${cartCount} items`}
         >
           <ShoppingCart size={26} />
+
+          {cartCount > 0 && (
+            <span className="cart-count-badge">
+              {cartCount}
+            </span>
+          )}
         </button>
 
         <button
@@ -33,8 +70,6 @@ function Header() {
         >
           <CircleUserRound size={26} />
         </button>
-
-        
       </div>
     </header>
   );
