@@ -97,6 +97,7 @@ function ProductDetails() {
       }
 
       setCartMessage("Product added to cart successfully!");
+      window.dispatchEvent(new Event("cartUpdated"));
     } catch (err) {
       setCartMessage(err.message || "Something went wrong.");
     } finally {
