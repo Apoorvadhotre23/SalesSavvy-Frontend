@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCart, ArrowLeft } from "lucide-react";
 import "./Cart.css";
+import { Trash2 } from "lucide-react";
 
 function Cart() {
   const navigate = useNavigate();
@@ -92,6 +93,39 @@ function Cart() {
     }
   };
 
+  // ----------------------------Remove button--------------------------//
+
+  const removeFromCart = async (cartItemId) => {
+    if (updatingId !== null) return;
+
+    setUpdatingId(cartItemId);
+    setError("");
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/cart/remove/${cartItemId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Unable to remove product from cart.");
+      }
+
+      setCartItems((previousItems) =>
+        previousItems.filter((item) => item.cartItemId !== cartItemId),
+      );
+
+      window.dispatchEvent(new Event("cartUpdated"));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
   // -------------------------------------------------------------------//
 
   const totalPrice = cartItems.reduce(
@@ -139,27 +173,39 @@ function Cart() {
                       ₹{Number(item.price).toLocaleString("en-IN")}
                     </p>
 
-                    <div className="cart-quantity">
-                      <button
-                        onClick={() =>
-                          updateQuantity(item.cartItemId, item.quantity - 1)
-                        }
-                        disabled={updatingId !== null || item.quantity <= 1}
-                      >
-                        −
-                      </button>
+                    <div className="cart-actions">
+                      <div className="cart-quantity">
+                        <button
+                          onClick={() =>
+                            updateQuantity(item.cartItemId, item.quantity - 1)
+                          }
+                          disabled={updatingId !== null || item.quantity <= 1}
+                        >
+                          −
+                        </button>
 
-                      <span>{item.quantity}</span>
+                        <span>{item.quantity}</span>
+
+                        <button
+                          onClick={() =>
+                            updateQuantity(item.cartItemId, item.quantity + 1)
+                          }
+                          disabled={
+                            updatingId !== null || item.quantity >= item.stock
+                          }
+                        >
+                          +
+                        </button>
+                      </div>
 
                       <button
-                        onClick={() =>
-                          updateQuantity(item.cartItemId, item.quantity + 1)
-                        }
-                        disabled={
-                          updatingId !== null || item.quantity >= item.stock
-                        }
+                        className="cart-remove-btn"
+                        onClick={() => removeFromCart(item.cartItemId)}
+                        disabled={updatingId !== null}
+                        aria-label={`Remove ${item.name} from cart`}
+                        title="Remove from cart"
                       >
-                        +
+                        <Trash2 size={18} />
                       </button>
                     </div>
 
