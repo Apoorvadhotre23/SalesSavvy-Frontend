@@ -10,6 +10,7 @@ import ProductListing from "./Pages/ProductListing/ProductListing";
 import Header from './Components/Header/Header.jsx'
 import Cart from "./Pages/Cart/Cart";
 import Checkout from "./pages/Checkout/Checkout";
+import OrderSuccess from "./pages/OrderSuccess/OrderSuccess";
 
 function AppContent() {
 
@@ -37,6 +38,7 @@ function AppContent() {
         <Route path="/category/:categoryName" element={<ProductListing />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/order-success" element={<OrderSuccess />} />
       </Routes>
     </>
   );

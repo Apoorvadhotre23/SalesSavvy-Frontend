@@ -1,0 +1,176 @@
+
+/* Main Order Success Page */
+
+.order-success-page {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background-color: #f5f7fb;
+  padding: 50px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Main Success Card */
+
+.order-success-card {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch;
+  width: 100%;
+  max-width: 750px;
+  min-width: 0;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.07);
+  text-align: center;
+}
+/* Success Icon */
+
+.order-success-icon {
+  display: block;
+  color: #16a34a;
+  margin: 0 auto 18px;
+}
+
+/* Main Heading */
+
+.order-success-card h1 {
+  font-size: 30px;
+  color: #166534;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+/* Success Message */
+
+.order-success-message {
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+/* Order Details and Delivery Address */
+
+.success-order-details,
+.order-delivery-info {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  background-color: #f8fafc;
+  padding: 24px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+/* Section Headings */
+
+.success-order-details h2,
+.order-delivery-info h3 {
+  color: #1f2937;
+  font-size: 20px;
+  margin-bottom: 18px;
+}
+
+/* Individual Order Details */
+
+.success-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 13px 0;
+  border-bottom: 1px solid #e5e7eb;
+  color: #64748b;
+  font-size: 15px;
+}
+
+.success-detail strong {
+  color: #1f2937;
+  text-align: right;
+  max-width: 70%;
+  overflow-wrap: anywhere;
+}
+
+/* Delivery Information */
+
+.order-delivery-info p {
+  color: #475569;
+  margin: 8px 0;
+  font-size: 15px;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+}
+
+/* COD Message */
+
+.order-cod-message {
+  color: #166534;
+  background-color: #dcfce7;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 22px;
+  font-size: 15px;
+}
+
+/* Continue Shopping Button */
+
+.continue-shopping-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.continue-shopping-btn:hover {
+  background-color: #1d4ed8;
+}
+
+/* Responsive Design */
+
+@media (max-width: 600px) {
+
+  .order-success-page {
+    padding: 20px 12px;
+  }
+
+  .order-success-card {
+    padding: 24px 18px;
+  }
+
+  .order-success-card h1 {
+    font-size: 24px;
+  }
+
+  .success-order-details,
+  .order-delivery-info {
+    padding: 18px;
+  }
+
+  .success-detail {
+    font-size: 13px;
+    gap: 10px;
+  }
+
+  .success-order-details h2,
+  .order-delivery-info h3 {
+    font-size: 18px;
+  }
+}
