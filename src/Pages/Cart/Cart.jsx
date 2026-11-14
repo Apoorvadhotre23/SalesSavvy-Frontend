@@ -167,12 +167,24 @@ function Cart() {
             <div className="cart-items">
               {cartItems.map((item) => (
                 <div className="cart-item" key={item.cartItemId}>
+                  {/* Product Image */}
+                  <div className="cart-item-image">
+                    {item.imageUrl ? (
+                      <img src={item.imageUrl} alt={item.name} />
+                    ) : (
+                      <div className="cart-image-placeholder">No Image</div>
+                    )}
+                  </div>
+
+                  {/* Product Information */}
                   <div className="cart-item-info">
                     <h3>{item.name}</h3>
+
                     <p className="cart-item-price">
                       ₹{Number(item.price).toLocaleString("en-IN")}
                     </p>
 
+                    {/* Quantity Controls and Remove */}
                     <div className="cart-actions">
                       <div className="cart-quantity">
                         <button
@@ -209,6 +221,7 @@ function Cart() {
                       </button>
                     </div>
 
+                    {/* Subtotal */}
                     <p>
                       Subtotal: ₹
                       {(Number(item.price) * item.quantity).toLocaleString(
@@ -222,10 +235,18 @@ function Cart() {
 
             <div className="cart-summary">
               <h2>Order Summary</h2>
+
               <div className="cart-total">
                 <span>Total</span>
                 <strong>₹{totalPrice.toLocaleString("en-IN")}</strong>
               </div>
+
+              <button
+                className="checkout-btn"
+                onClick={() => navigate("/checkout")}
+              >
+                Proceed to Checkout
+              </button>
             </div>
           </>
         )}
